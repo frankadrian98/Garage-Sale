@@ -1,8 +1,8 @@
 from collections import OrderedDict
 
 from typing import Dict, Iterator, List, Optional, Union
-from .agent import Agent
-from .model import Model
+from agent import Agent
+from model import Model
 
 
 TimeT = Union[float, int]
@@ -17,15 +17,15 @@ class BaseScheduler:
         self._agents: Dict[int, Agent] = OrderedDict()
 
     def add(self, agent: Agent) -> None:
-        if agent.unique_id in self._agents:
+        if agent.id in self._agents:
             raise Exception(
-                f"Agent with unique id {repr(agent.unique_id)} already added to scheduler"
+                f"Agent with unique id {repr(agent.id)} already added to scheduler"
             )
 
-        self._agents[agent.unique_id] = agent
+        self._agents[agent.id] = agent
 
     def remove(self, agent: Agent) -> None:
-        del self._agents[agent.unique_id]
+        del self._agents[agent.id]
 
     def step(self) -> None:
         for agent in self.agent_buffer(shuffled=False):

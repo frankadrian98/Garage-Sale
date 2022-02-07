@@ -1,8 +1,10 @@
-import numpy as np
-from scipy.stats import poisson
+
+
 from scipy.stats import beta
-from .time import RandomActivation
-from .model import Model
+from mytime import RandomActivation
+from model import Model
+from customer import Customer
+from server import Server
 import random
 
 from typing import Any, Optional
@@ -44,5 +46,7 @@ class MyQueue(Model):
  def sim(self):
     self._current_time += 1
     self.schedule.step()
+
+
 
           

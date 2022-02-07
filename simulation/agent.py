@@ -1,4 +1,5 @@
-from .model import Model
+from model import Model
+from random import Random
 
 class Agent:
 

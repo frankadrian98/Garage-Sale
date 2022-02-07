@@ -1,9 +1,14 @@
-from .agent import Agent
+from agent import Agent
+from scipy.stats import poisson,beta
+import numpy as np
+
+time = 10800
 
 class Customer(Agent):
-    def __init__(self, unique_id, model):
+    def __init__(self, id, model):
+        self.id = id
         self._service_time = poisson(120).rvs()  # Tiempo en que lo va a atender los servidores
-        self._entry_time = np.int(beta.rvs(1,5, size = 100) * time)  # Tiempo de entrada a la tienda 
+        self._entry_time = np.int(beta.rvs(1,5, size = 1) * time)  # Tiempo de entrada a la tienda 
         self._tolerance = poisson(60).rvs()  # Nivel de tolerancia del cliente
        
         #Valores para saber si el cliente esta o no en la tienda
