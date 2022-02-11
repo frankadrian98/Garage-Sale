@@ -1,51 +1,38 @@
 
-
-from scipy.stats import beta
-from mytime import RandomActivation
-from model import Model
+from scipy.stats import poisson
 from customer import Customer
 from server import Server
+from cashier import Cashier
 import random
 
-from typing import Any, Optional
-
-# Tiempo total de la simulacion
-time = 10800   #simularemos las acciones de la tienda por 3 horas (10800 seg)
-no_customers = 100 # cant de clientes que entraran en las horas determinadas
-no_servers = 4 #cant de servidores que tiene la tienda
-server_array = [] #Array para saber si los servidores estan ocupados
-avg_line_time = 120 # cant de tiempo promedio qu se demora un cliente en la cola
-avg_service_time = 80 # cant de tiempo promedio el cual se demora un servidor en atender al cliente
-customers_queue = [] #cant de clientes que hay en la cola para entrar a la tienda
-
-        
-       
-
-class MyQueue(Model):
- def __init__(self, no_servers, no_customers, time ):
-    self.schedule = RandomActivation(self)
-    self._current_time = 1
-    self.time = time
-    self.no_customers = no_customers
-    self.no_servers = no_servers
-     
-    self.customers = []
-    self.server_array = []
-
-    for i in range(self.no_customers):
-        customer = Customer(i, self)
-        self.schedule.add(customer)
-        self.customers.append(customer)
-
-    for i in range(self.no_servers):
-        server = Server(i + no_customers , self)
-        self.schedule.add(server)
-        self.server_array.append(server)
+class Garage_Sale_Model:
+  def __init__(self):
+    def __init__(self, no_customers = 100, no_servers = 4, no_cashiers = 2):
+      self.actual_seg = 1 # segundo actual por el que va la simulacion
+      self.time = 10800   #simularemos las acciones de la tienda por 3 horas (10800 seg)
+      self.no_customers = no_customers  # cant de clientes que entraran en las horas determinadas
+      self.no_servers = no_servers #cant de servidores que tiene la tienda
+      self.no_cashiers = no_cashiers #cant de cajeros que tiene la tienda
+      self.avg_line_time = 80 # cant de tiempo promedio qu se demora un cliente en la cola
+      self.avg_service_time = 120 # cant de tiempo promedio el cual se demora un servidor en atender al cliente
+      self.avg_cashier_time = 80  # cant de tiempo promedio el cual se demora un cajero en atender al cliente
+      self.no_lost_customers = 0 #cant de clientes que se fueron sin servicio
+      #Creando los agentes
+      self.customers = [] #Crear los clientes que van a estar en la simulacion
+      for i in range(self.no_customers) :
+          customer = Customer(self, i)
+          self.customers.append(customer)
+      self.servers = [] # Crear los servidores de la simulacion
+      for i in range(self.no_servers) :
+          server = Server(self, i)
+          self.servers.append(server)
+      self.cashiers = [] #Crear los cajeros de la simulacion
+      for i in range(self.no_cashiers) :
+          cashier = Cashier(self, i)
+          self.cashiers.append(cashier)
    
-            
- def sim(self):
-    self._current_time += 1
-    self.schedule.step()
+    def sim(self):
+        self.actual_seg += 1
 
 
 

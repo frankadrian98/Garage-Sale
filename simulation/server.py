@@ -1,16 +1,20 @@
 from agent import Agent
+from customer import Customer
+from collections import deque
+from simulation import Garage_Sale_Model
 
 
 class Server(Agent) :
-    def __init__(self, unique_id,customer = None):
-        super().__init__(unique_id,customer)
+    def __init__(self, id, model):
         self.busy = False
-        self.actual = customer
-        if customer:
-            self.actual._service = self.model._current_time
+        self.actual_customer : None
+        self.model = model
+        self.server_queue = deque([])
       
-
-
     def sim(self):
         if self.actual is None: 
-             self.actual._service_exit = self.model._current_time - 1
+            self.busy = True
+            self.actual_customer = self.server_queue.pop()
+            self.actual_customer._service = self.model.actual_sec
+            
+             
