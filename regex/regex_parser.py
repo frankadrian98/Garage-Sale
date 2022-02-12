@@ -2,14 +2,14 @@ import numpy as np
 from .regex_lexer import RegLexer
 from .regex_token import *
 from .regex_ast import *
-
+from functools import lru_cache
 
 class RegParser:
 
 
     def __init__(self):
         self.lexer = RegLexer()
-
+    @lru_cache(maxsize=4)
     def parse(self, exp: str):
         
         def get_range(start: str, end: str):

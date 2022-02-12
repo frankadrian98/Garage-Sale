@@ -23,46 +23,44 @@ class Token():
 
     
 class TokenRegex():
-    def __init__(self, name: str, exp: str, process: Callable = None):
+    def __init__(self,name:str, exp: str, process: Callable = None):
         self.name = name
-        self.exp: re.Pattern = re.compile(exp)
-        # self.exp = exp
-        # self.regex = RegexEngine()
+        #self.exp: re.Pattern = re.compile(exp)
+        self.exp = exp
+        self.regex = RegexEngine()
         self.process = process
- 
+
+
+    
+
     def match(self, text: str, start: int, line: int, column: int):
-        matched: re.Match = self.exp.match(text, start)
-        if not matched:
-            return False
-
-        end = matched.end()
-        if self.process:
-            value = self.process(matched.group())
+        def f_spaces(text):
+            c = 0
+            for s in text[start:]:
+                if not str(s).isspace():
+                    break
+                c+=1
+            return c
+        spaces = f_spaces(text)
+        matched,_,matches = self.regex.match(self.exp, text,return_matches= True,continue_matching=True)
+        if matched:
+            pass
         else:
-            value = matched.group()
+            return False
+        match = None
+        for m in matches:
+            if m[0].start == 0:
+                match = m[0]
+        if not match:
+            return False
+        if self.process:
+            value = self.process(match.match)
+        else:
+            value = match.match
 
-        for c in matched.group():
+        for c in match.match:
             if c == '\n':
                 line += 1
                 col = 1
 
-        return Token(self.name, value, start, end, line, column)
-
-    # def match(self, text: str, start: int, line: int, col: int):
-    #     matched, _, matches = self.regex.match(self.exp, text, True,True)
-    #     if not matched:
-    #         return False
-    #     final_list = []
-    #     for tokenl in matches:
-    #         end = tokenl[0].end
-    #         start = tokenl[0].start 
-    #         if self.process:
-    #             value = self.process(tokenl[0].match)
-    #         else:
-    #             value = tokenl[0].match
-    #         for c in tokenl[0].match:
-    #             if c == '\n':
-    #                 line += 1
-    #                 col = 1
-    #         final_list.append(Token(self.name,value,start,end,line,col))
-    #     return final_list
+        return Token(self.name, value, match.start+start, match.end+start, line, column)
