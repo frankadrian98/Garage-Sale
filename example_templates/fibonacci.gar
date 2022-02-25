@@ -1,0 +1,41 @@
+int fibonacci(int f){
+    int p := 1;
+    int s := 1;
+    int i := 0;
+    while ( i <= (f-2) ){
+        int temp := p;
+        p := s;
+        s := s + temp;
+        i := i +1;
+    }
+    return s;
+}
+int rec_fibonacci(int f){
+    if ( (f == 0) or (f == 1 ) ){
+        return 1;
+    }
+    return rec_fibonacci(f-1) + rec_fibonacci(f-2);
+}
+int factorial(int a){
+    int s := 1;
+    int result := 1;
+    if(a < 2){
+        a := 1;
+    }
+    else{
+        while(s < a){
+            result := result * a;
+            a := a - 1;
+        }
+        result := result;
+    }
+    return result;
+}
+int rec_factorial(int a){
+    if (a < 2){
+        return 1;
+    }
+    return a * rec_factorial(a-1);
+}
+print ( (rec_fibonacci(5) == fibonacci(5) ) and (fibonacci(5) == 8) );
+print( factorial(5) == rec_factorial(5) and (not (factorial(5) != 120) ) );

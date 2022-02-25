@@ -1,5 +1,5 @@
 from typing import List
-from token_ import Token, TokenRegex
+from _lexer.token_ import Token, TokenRegex
 
 
 def tokenize(program: str, token_regexs: List[TokenRegex]):
@@ -30,7 +30,7 @@ def tokenize(program: str, token_regexs: List[TokenRegex]):
             break
 
         if not valid:
-            raise Exception()
+            raise Exception('\033[93m'+'Unexpected '+str(program[start])+' at line, '+str(line)+' position '+str(column)+' of current block.'+'\033[0m')
         if start == len(program): 
             return tokens
 
