@@ -1,3 +1,4 @@
+
 from agent import Agent
 
 
@@ -12,7 +13,7 @@ class Cashier(Agent) :
         self.queue = []
       
     def sim(self):
-        if self.actual is None: 
+        if self.actual_customer is None: 
             self.busy = True
             self.actual_customer =self.server_queue.pop(0)
-            self.actual_customer._cservice = self.model.actual_sec  
+  

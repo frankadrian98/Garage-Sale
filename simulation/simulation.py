@@ -10,7 +10,7 @@ class Garage_Sale_Model:
   def __init__(self, no_servers, no_cashiers):
       self.actual_sec = 1 # segundo actual por el que va la simulacion
       self.time = 10800   #simularemos las acciones de la tienda por 3 horas (10800 seg)
-      self.no_customers = 5  # cant de clientes que entraran en las horas determinadas
+      self.no_customers = 500  # cant de clientes que entraran en las horas determinadas
       self.no_servers = no_servers #cant de servidores que tiene la tienda
       self.no_cashiers = no_cashiers #cant de cajeros que tiene la tienda
       if(self.no_servers< self.no_cashiers):

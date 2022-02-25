@@ -13,7 +13,10 @@ El precio de cada artículo varía según su calidad. Se sabe que en el local de
 
 Se desea simular el proceso de las ventas, variando las formas de organizar los productos y también a los empleados para minimizar el tiempo de espera del cliente en las colas y también para maximizar la ganancia total de la tienda.
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2554b46c226f2da51476b2570e783f17e7bb9738
 Para la simulación:
 
 Elementos del Sistema :
@@ -33,4 +36,8 @@ Elementos del Sistema :
   Utilizamos una distribución de Poisson para que este número sea discreto y no negativo.
 
 - Cada cliente tiene una tolerancia de 5 personas en la cola a la cual se debe unir, es decir, si en una cola hay 5 o más personas el cliente decidirá unirse a otra y si todas tienen esta cantidad de personas , entonces no se unirá a ninguna, decidira irse y se pierde al cliente.
+<<<<<<< HEAD
 Esto pasa tanto en la cola para el servidor como en la cola para el cajero.
+=======
+Esto pasa tanto en la cola para el servidor como en la cola para el cajero.
+>>>>>>> 2554b46c226f2da51476b2570e783f17e7bb9738

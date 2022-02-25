@@ -1,0 +1,47 @@
+int actual_sec := 1;
+int time := ( (5 * 60) * 60);
+int no_customers := 100;
+int no_servers := 5;
+int no_cashiers := 2;
+list get_workers(int no_s, int no_c){
+    return [no_s, no_c];
+}
+list gw := get_workers(no_servers, no_cashiers);
+no_servers := gw[0];
+no_cashiers := gw[1];
+if ( no_servers < no_cashiers ){
+    print("Servers amount must be greater than cashiers, continue at your risk");
+}
+int avg_line_time := 80;
+int avg_service_time := 160;
+int avg_cashier_time := 100;
+int no_lost_costumers := 0;
+list customers := [];
+int index := 0;
+while ( index < no_customers ){
+    Customer customer := Customer(index);
+    l_append(customers, customer);
+    index := (index + 1);
+}
+list servers := [];
+while ( index < no_servers ){
+    Server server := Server(index);
+    l_append(servers, server);
+    index := (index + 1);
+}
+list cashiers := [];
+index := 0;
+while ( index < no_cashiers ){
+    Cashier cashier := Cashier(index);
+    l_append(cashiers, cashier);
+    index := (index + 1);
+}
+void sim(){
+    int i := 0;
+    while ( i < l_len(customers) ){
+        Customer custom := customers[i];
+        actual_sec := (actual_sec + 1);
+        i := (i + 1);
+    }
+}
+sim();

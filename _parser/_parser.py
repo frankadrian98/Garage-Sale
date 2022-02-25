@@ -1,8 +1,8 @@
 from collections import deque
 from typing import Union, Callable
-from lexer import tokenize
+from _lexer._lexer import tokenize
 
-from token_ import Token, TokenRegex
+from _lexer.token_ import Token, TokenRegex
 
 def rule(rule_string: str, name: Union[str, None], process: Callable, antilookahead=[]):
     rule = []
@@ -58,7 +58,7 @@ def parse(grammar: dict, chart: dict, tokens, startrule: list):
     for curpos in range(len(tokens)+1):
         if chart[curpos] == []:
             curtoken = tokens[curpos-1]
-            raise Exception('Unexpected '+str(curtoken.value)+' at line '+str(curtoken.line)+' position '+str(curtoken.col)+'.')
+            raise Exception('\033[93m'+'Unexpected '+str(curtoken.value)+' at line '+str(curtoken.line)+' position '+str(curtoken.col)+'.'+'\033[0m')
 
   
         for state in chart[curpos]:
@@ -85,5 +85,10 @@ def parse(grammar: dict, chart: dict, tokens, startrule: list):
                 shift(tokens,chart,state,curpos)
 
 
+chart = {}       
 
-    
+
+
+
+
+

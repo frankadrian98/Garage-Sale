@@ -1,0 +1,11 @@
+int s := 0;
+int first(int f){
+    s := f;
+    int second(int f){
+        return s + f;
+    }   
+    return second(10);
+}
+print( first( 5) );
+print( second( 10) );
+print(s);

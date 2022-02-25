@@ -1,3 +1,4 @@
+
 from agent import Agent
 from scipy.stats import poisson
 import numpy as np
@@ -89,3 +90,5 @@ class Customer(Agent):
 
        
        
+
+

@@ -29,7 +29,7 @@ class RegLexer:
                 pos += 1 
                 continue
             elif char == '.':
-                tokens.append(WildcardToken())
+                tokens.append(Dot())
             elif char == '(':
                 tokens.append(LParenthesisToken())
             elif char == ')':
@@ -80,4 +80,4 @@ class RegLexer:
 
         return tokens
 
-l = RegLexer()
+
