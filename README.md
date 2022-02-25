@@ -12,3 +12,25 @@ No se tiene a disposición ninguna información que permita calcular la cantidad
 El precio de cada artículo varía según su calidad. Se sabe que en el local deben existir tanto artículos colgados como artículos doblados debido a que la cantidad de mercancía es demasiado grande y se requiere que toda esta se le exhiba al cliente. 
 
 Se desea simular el proceso de las ventas, variando las formas de organizar los productos y también a los empleados para minimizar el tiempo de espera del cliente en las colas y también para maximizar la ganancia total de la tienda.
+
+
+Para la simulación:
+
+Elementos del Sistema :
+* Caja (Recepción de Pagos)
+* Servidor (Atención al Cliente)
+* Cliente (Interactúa con los demás agentes y tiene un nivel de tolerancia según la cantidad de personas que se encuentren en la cola)
+
+-Simularemos por un tiempo de 3 horas = 10 800 segundos
+
+-El usuario define la cantidad de clientes que llegarán en ese espacio de tiempo  (máximo 500 clientes)
+
+-Los clientes llegarán cada 2 minutos (120 segundos) en promedio según una distribución de Poisson
+
+- Se simula dado un sistema de colas dada la Teoría M/M/s, la cual tiene s cantidad de servidores 
+
+-El tiempo promedio para que el servidor procese a un cliente es de aproximadamente 160 segundos. 
+  Utilizamos una distribución de Poisson para que este número sea discreto y no negativo.
+
+- Cada cliente tiene una tolerancia de 5 personas en la cola a la cual se debe unir, es decir, si en una cola hay 5 o más personas el cliente decidirá unirse a otra y si todas tienen esta cantidad de personas , entonces no se unirá a ninguna, decidira irse y se pierde al cliente.
+Esto pasa tanto en la cola para el servidor como en la cola para el cajero.

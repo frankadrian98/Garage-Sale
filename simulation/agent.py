@@ -1,19 +1,16 @@
-from model import Model
+
 from random import Random
 
 class Agent:
 
-    def __init__(self, id: int, model: Model) -> None:
+    def __init__(self, id: int, model) :
         self.id = id
         self.model = model
-        self.pos = None
-
-    def step(self) -> None:
+        
+        
+    def sim(self) -> None:
         pass
 
-    def advance(self) -> None:
-        pass
+   
 
-    @property
-    def random(self) -> Random:
-        return self.model.random
+    
