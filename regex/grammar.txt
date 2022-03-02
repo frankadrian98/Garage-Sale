@@ -1,9 +1,0 @@
-
-EXP ::= EXP_SEC
-EXP_SEC ::= '^'? GROUP '$'? ('|' EXP_SEC)?
-GROUP ::= (RANGE_EL QUANTIFIER?)+
-RANGE_EL ::= EL | '[' '^'? INNER ']'
-EL ::= '\\'? (ch | SPECIALCH) | '(' ('?:')? EXP_SEC ')'
-QUANTIFIER ::= '*' | '+' | '?' | '{' (num)? ',' num '}' | '{' num '}'
-INNER ::= ch+ | ch '-' ch INNER
-SPECIALCH ::= '(' | ')' | '+' | '{' | '.' | '^'| ...
