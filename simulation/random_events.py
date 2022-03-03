@@ -7,7 +7,7 @@ def rainy_day(model):
 
 def broken_cashier(model):
     print("Broken Cashier")
-    if model.cashiers:
+    if len(model.cashiers)>1:
         model.remove_cashier()
 
 def angry_customers(model):

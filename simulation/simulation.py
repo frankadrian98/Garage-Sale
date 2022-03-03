@@ -11,7 +11,7 @@ import random
 
 
 class Garage_Sale_Model:
-    def __init__(self,no_customers = 500, no_servers = 5, no_cashiers = 5 , behavior = [], cost_workers = 200, customer_value = 10,time = 7200):
+    def __init__(self,no_customers = 500, no_servers = 5, no_cashiers = 5 , behavior = [], cost_workers = 200, customer_value = 10,time = 10800):
         self.actual_sec = 1 # segundo actual por el que va la simulacion
         self.time = time   #simularemos las acciones de la tienda por 3 horas (10800 seg)
         self.no_customers = no_customers  # cant de clientes que entraran en las horas determinadas
@@ -19,14 +19,13 @@ class Garage_Sale_Model:
         self.no_cashiers = no_cashiers #cant de cajeros que tiene la tienda
         self.cost_workers = cost_workers #costo de cada trabajador
         self.customer_value = customer_value # dinero bruto ganado por cada cliente
-        self.behavior = behavior + [ select_by_time, select_random , select_min] #lista de los comportamientos de los clientes
+        self.behavior = [ select_by_time, select_random , select_min] if not behavior else behavior#lista de los comportamientos de los clientes
        
         # self.avg_line_time = 80 # cant de tiempo promedio qu se demora un cliente en la cola
         # self.avg_service_time = 160 # cant de tiempo promedio el cual se demora un servidor en atender al cliente
         # self.avg_cashier_time = 100  # cant de tiempo promedio el cual se demora un cajero en atender al cliente
         self.no_lost_customers = 0 #cant de clientes que se fueron sin servicio
         self.entry = 1
-
 
         #Creando los agentes
         #Creando los clientes
@@ -47,7 +46,7 @@ class Garage_Sale_Model:
         for i in range(self.no_cashiers):
             cashier = Cashier(i, self,  poisson(100).rvs() )
             self.cashiers.append(cashier)
-        self.totalagent = self.customers + self.servers + self.cashiers
+
 
         self.collect_info = {'Customers Arrived' : [],
                         'Customers Server Served' : [] ,                   
@@ -66,34 +65,34 @@ class Garage_Sale_Model:
         agg_customer = Customer(index, self, behavior)
         self.customers.append(agg_customer)
         self.no_customers += 1
-        self.totalagent +=1
+
     
     def remove_customer(self, id=-1):
         self.customers.pop(id)
         self.no_customers -= 1
-        self.totalagent -= 1
+
 
     def add_server(self):
         agg_server = Server(self.no_servers, self) 
         self.servers.append(agg_server)
         self.no_servers += 1
-        self.totalagent +=1
+ 
     
     def remove_server(self, id=-1):
         self.servers.pop(-1)
         self.no_servers -= 1
-        self.totalagent -= 1
+
 
     def add_cashier(self):
         agg_cashier = Cashier(self.no_cashiers , self) 
         self.servers.append(agg_cashier)
         self.no_cashiers += 1
-        self.totalagent +=1
+
     
     def remove_cashier(self, id=-1):
         self.cashiers.pop(-1)
         self.no_cashiers -= 1
-        self.totalagent -= 1
+
 
     def add_behavior(self, agg_behavior):
         self.behavior.append(agg_behavior)
@@ -110,16 +109,9 @@ class Garage_Sale_Model:
         self.collect_info[ 'Total Gain'].append(get_total_gain(self))
       
      
-
-        
-       
-
-    
-
-   
     def sim(self):
         while self.actual_sec != self.time:
             self.update_data()
-            for agent in self.totalagent:
+            for agent in self.customers+self.servers+self.cashiers:
                 agent.sim()
             self.actual_sec += 1

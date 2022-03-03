@@ -1,4 +1,5 @@
 from logging import warning
+import warnings
 import numpy as np
 
 
@@ -47,11 +48,11 @@ def get_avg_waiting_time(model):
                       customer.service - customer.qs_entry for customer in model.customers]
     cashier_queue_wait = [np.nan if customer.cservice is None else
                       customer.cservice - customer.qc_entry for customer in model.customers]
-    
-    avg_customer_wait = np.nanmean(server_queue_wait)
+    warnings.simplefilter("ignore")
+    avg_customer_wait = np.nanmean(server_queue_wait+cashier_queue_wait)
     return avg_customer_wait
 
 def get_total_gain(model):
     return model.customer_value * get_cashier_served(model) - model.cost_workers * (model.no_servers + model.no_cashiers)
 
-  
+
