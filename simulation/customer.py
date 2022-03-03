@@ -1,94 +1,93 @@
-
 from agent import Agent
-from scipy.stats import poisson
+from scipy.stats import poisson , beta
+from behaviors import *
 import numpy as np
 
 time = 10800
 
 class Customer(Agent):
-    def __init__(self, id, model):
-        self.id = id
-        self.model = model
-        self.line_time = poisson(80).rvs()
-        self._service_time = poisson(160).rvs()  # Tiempo en que lo va a atender los servidores
-        self._entry_time = poisson(120).rvs() + self.model.entry  # Tiempo de entrada del cliente a la tienda 
-        self.model.entry = self._entry_time
-        self._tolerance = 5  # Nivel de tolerancia del cliente
-        self._cashier_time = poisson(100).rvs()  # Tiempo en que lo va a atender el cajero
+    def __init__(self, id, model, behavior):
+        super().__init__(id, model)
+       # self.id = id
+       # self.model = model
+        self.behavior = behavior
+        self.entry_time  = np.int(beta(3, 3).rvs() * model.time) + 1
+      #  self.entry_time = poisson(120).rvs() + self.model.entry  # Tiempo de entrada del cliente a la tienda 
+        self.model.entry = self.entry_time
+        self.line_time = poisson(80).rvs()  #Tiempo que va a esperar en las colas
+        
+        self.tolerance = poisson(5).rvs()  # Nivel de tolerancia del cliente
+        
        
         #Valores para saber si el cliente esta o no en la tienda
-        self._arrived = False
-        self._exit = False   
+        self.arrived = False
+        self.exit = False   
 
          #Valor para saber cuando el cliente entra de la cola para los servidores
-        self._qs_entry = None
-       # self._qs_exit = None
+        self.qs_entry = None
+       # self.qs_exit = None
           
          #Valor para saber a que hora el cliente  entra al servidor
-        self._service = None       
-        # self._service_exit = None
+        self.service = None       
+        # self.service_exit = None
          
          #Valor para saber cuando entro y salio de la cola para los cajeros
-        self._qc_entry = None
-        # self._qc_exit = None
+        self.qc_entry = None
+        # self.qc_exit = None
 
          #Valor para saber a que hora el cliente  entra y sale del cajero
-        self._cservice = None       
-        self._cservice_exit = None
+        self.cservice = None       
+        self.cservice_exit = None
         
         #Para poder escoger el servidor que le va a atender
-        def select_server(self):
-          self._arrived = True
-          self.minserver = np.argmin([len(server.queue) for server in self.model.servers])
-          self.chosens = self.model.server[self.minserver]
+    def select_server(self):
+          self.arrived = True
+          self.chosens = self.behavior(self.model.servers)
            #Si la cant de personas en la cola x es mayor que el nivel de tolerancia del cliente
            #decidira no ponerse en esa cola
-          if len(self.chosens) < self._tolerance:
+          if len(self.chosens.queue) < self.tolerance:
               self.chosens.queue.append(self) #Se annade el cliente a la cola del servidor
-              self._qs_entry = self.model.actual_sec   #Se actualiza el tiempo de entrada a la cola
+              self.qs_entry = self.model.actual_sec   #Se actualiza el tiempo de entrada a la cola
           else:
-            self._exit = True   #Si no encuentra una cola que cumple sus requisitos se va del sistema
+            self.exit = True
+            self.model.no_lost_customers +=1   #Si no encuentra una cola que cumple sus requisitos se va del sistema
           
-        def select_cashier(self):
-          self.mincashier = np.argmin([len(cashier.queue) for cashier in self.model.cashiers])
-          self.chosenc = self.model.cashier[self.mincashier]
+    def select_cashier(self): 
+          
+          self.chosenc = self.behavior(self.model.cashiers)
            #Si la cant de personas en la cola x es mayor que el nivel de tolerancia del cliente
            #decidira no ponerse en esa cola
-          if len(self.chosenc) < self._tolerance:
+          if len(self.chosenc.queue) < self.tolerance:
               self.chosenc.queue.append(self) #Se annade el cliente a la cola del cajero
-              self._qc_entry = self.model.actual_sec #Se actualiza el tiempo de entrada a la cola
+              self.qc_entry = self.model.actual_sec #Se actualiza el tiempo de entrada a la cola
           else:
-           self._exit = True #Si no encuentra una cola que cumple sus requisitos se va del sistema
+           self.exit = True #Si no encuentra una cola que cumple sus requisitos se va del sistema
+           self.model.no_lost_customers +=1 
 
-        def out_server(self):
-          self._qc_entry = self.model.actual_sec
+    def out_server(self):
+          self.qc_entry = self.model.actual_sec
           self.chosens.actual_customer = None
 
-        def pay(self):
-          self._cservice_exit = self.model.actual_sec
+    def pay(self):
+          self.cservice_exit = self.model.actual_sec
           self.chosenc.actual_customer = None  
         
 
 
-        def sim(self) :
-            if (self._arrived == False) & (self.model.actual_sec >= self.entry_time):
-              self.select_server()
-            elif(self._qs_entry != None):
-              if(self.model.actual_sec - self._qs_entry ==  self.line_time):
-                 self.chosens.sim()
-            elif (self._service != None):
-              if(self.model.actual_sec - self._service ==  self._service_time):
-                out_server()
-                select_cashier()
-            elif(self._qc_entry != None):
-              if(self.model.actual_sec - self._qc_entry ==  self.line_time):
-                 self.chosenc.sim()
-            elif(self._cservice != None):
-              if(self.model.actual_sec - self._cservice ==  self._cashier_time):
-                 pay()
+    def sim(self) :
+        if self.arrived == False and self.model.actual_sec >= self.entry_time:
+            self.select_server()
+       # elif self.qs_entry != None and self.model.actual_sec - self.qs_entry ==  self.line_time :
+        elif self.service != None and self.model.actual_sec - self.service ==  self.chosens.service_time :
+            self.out_server()
+            self.select_cashier()
+            self.chosens.sim()
+       # elif self.qc_entry != None and self.model.actual_sec - self.qc_entry ==  self.line_time :
+        elif self.cservice != None and self.model.actual_sec - self.cservice ==  self.chosenc.service_time :
+            self.pay()
+            self.chosenc.sim()
 
 
-       
        
 
 
