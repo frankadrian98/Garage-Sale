@@ -6,6 +6,7 @@ from customer import Customer
 from server import Server
 from cashier import Cashier
 from check_metrics import *
+from random_events import event_selector
 import random
 
 
@@ -16,7 +17,6 @@ class Garage_Sale_Model:
         self.no_customers = no_customers  # cant de clientes que entraran en las horas determinadas
         self.no_servers = no_servers #cant de servidores que tiene la tienda
         self.no_cashiers = no_cashiers #cant de cajeros que tiene la tienda
-        self.no_workers =   self.no_servers + self.no_cashiers #cant total de trabajadores
         self.cost_workers = cost_workers #costo de cada trabajador
         self.customer_value = customer_value # dinero bruto ganado por cada cliente
         self.behavior = behavior + [ select_by_time, select_random , select_min] #lista de los comportamientos de los clientes
@@ -33,7 +33,7 @@ class Garage_Sale_Model:
         self.customers = [] #Crear los clientes que van a estar en la simulacion
         for i in range(self.no_customers) :
             
-            customer = Customer(i, self, self.behavior[random.randint(0,2)])
+            customer = Customer(i, self, self.behavior[random.randint(0,len(self.behavior) - 1)])
             
              #asignar funcion rndom de la lista de funciones
             self.customers.append(customer)
@@ -59,21 +59,41 @@ class Garage_Sale_Model:
                         'Total Gain': []
         }
 
+        event_selector(self)
+
     def add_customer (self, behavior):
         index = self.no_customers
         agg_customer = Customer(index, self, behavior)
         self.customers.append(agg_customer)
         self.no_customers += 1
+        self.totalagent +=1
+    
+    def remove_customer(self, id=-1):
+        self.customers.pop(id)
+        self.no_customers -= 1
+        self.totalagent -= 1
 
     def add_server(self):
         agg_server = Server(self.no_servers, self) 
         self.servers.append(agg_server)
         self.no_servers += 1
+        self.totalagent +=1
+    
+    def remove_server(self, id=-1):
+        self.servers.pop(-1)
+        self.no_servers -= 1
+        self.totalagent -= 1
 
     def add_cashier(self):
         agg_cashier = Cashier(self.no_cashiers , self) 
         self.servers.append(agg_cashier)
         self.no_cashiers += 1
+        self.totalagent +=1
+    
+    def remove_cashier(self, id=-1):
+        self.cashiers.pop(-1)
+        self.no_cashiers -= 1
+        self.totalagent -= 1
 
     def add_behavior(self, agg_behavior):
         self.behavior.append(agg_behavior)
@@ -103,8 +123,3 @@ class Garage_Sale_Model:
             for agent in self.totalagent:
                 agent.sim()
             self.actual_sec += 1
-  
-     
-
-
-          

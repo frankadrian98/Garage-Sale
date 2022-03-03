@@ -52,6 +52,6 @@ def get_avg_waiting_time(model):
     return avg_customer_wait
 
 def get_total_gain(model):
-    return model.customer_value * get_cashier_served(model) - model.cost_workers * model.no_workers
+    return model.customer_value * get_cashier_served(model) - model.cost_workers * (model.no_servers + model.no_cashiers)
 
   
