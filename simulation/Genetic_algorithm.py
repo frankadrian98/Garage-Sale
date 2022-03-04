@@ -1,8 +1,8 @@
 from random import choice
 import numpy as np
-from simulation import Garage_Sale_Model
-from check_metrics import get_total_gain
-from behaviors import *
+from simulation.simulation import Garage_Sale_Model
+from simulation.check_metrics import get_total_gain
+from simulation.behaviors import *
 
 
 
@@ -71,7 +71,7 @@ class Genetic_algorithm:
     def Run (self, individuals, Maximize):
         parents  = self.Parents(individuals, Maximize) # mejores padres
         children = self.Children(parents, len(individuals)) 
-        #individuals.Clear()
+        individuals = []
         return children
  
 
@@ -83,16 +83,18 @@ class Individual:
         self.no_cashiers = no_cashiers
         self.behavior = indbehavior   
 
+
     def Mutation(self):
         prob = random.randint(0,3)
         if prob == 0:
             self.no_customers = random.choice(list(set([x for x in range(1,501)])-set([self.no_customers])))
+            self.behavior = [random.randint(0,MakeSim.default_behavior_count-1) for o in range(self.no_customers)] 
         elif prob==1:
             self.no_servers = random.choice(list(set([x for x in range(1,9)])-set([self.no_servers])))
         elif prob == 2:
             self.no_cashiers = random.choice(list(set([x for x in range(1,10-self.no_servers)])-set([self.no_cashiers])))
         else:
-            self.behavior = [random.randint(0,MakeSim.default_behavior_count) for o in range(self.no_customers)] 
+            self.behavior = [random.randint(0,MakeSim.default_behavior_count-1) for o in range(self.no_customers)] 
     
 class MakeSim:
     default_behavior_count  = 3
@@ -125,7 +127,7 @@ class MakeSim:
         individual.no_customers = random.randint(1,500)
         individual.no_servers = random.randint(1,9)
         individual.no_cashiers = random.randint(1, 10 -individual.no_servers)
-        individual.behavior = [random.randint(0,len(self.behaviors)-1) for o in range(individual.no_customers)]    
+        individual.behavior = [random.randint(0, MakeSim.default_behavior_count-1) for o in range(individual.no_customers)]    
         return individual
 
     def Individual_poblation(self, countpoblation):

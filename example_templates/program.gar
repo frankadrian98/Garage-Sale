@@ -1,0 +1,30 @@
+
+    
+list split_workers(int no_workers){
+    list distributions := [];
+    int i := 1;
+    while(i < no_workers){
+        l_append(distributions,i);
+        l_append(distributions,no_workers-i);
+        i:= i + 1;
+    }
+    return distributions;
+}
+void test(int workers){
+    list dist := split_workers(workers);
+    int i := 0;
+    Garage_Sale_Model best := Garage_Sale_Model(500,1,workers - 1);
+    while (i < l_len(dist)){
+       Garage_Sale_Model mymodel := Garage_Sale_Model(500,dist[i], dist[i+1]);
+       void x := mymodel.sim();
+       print_sim_data(mymodel,dist[i],dist[i+1]);
+       i := i + 2;
+       if (mymodel.get_total_gain() > best.get_total_gain()){
+           best := mymodel;
+       }
+    }
+    print("******************************************");
+    print("The best distributions for the workers was:");
+    print_sim_data(best,best.no_servers,best.no_cashiers);
+}
+test(10);

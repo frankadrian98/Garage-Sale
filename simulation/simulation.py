@@ -1,12 +1,12 @@
-from behaviors import *
+from simulation.behaviors import *
 from logging import raiseExceptions
 from scipy.stats import poisson
-from agent import Agent
-from customer import Customer
-from server import Server
-from cashier import Cashier
-from check_metrics import *
-from random_events import event_selector
+from simulation.agent import Agent
+from simulation.customer import Customer
+from simulation.server import Server
+from simulation.cashier import Cashier
+from simulation.check_metrics import *
+from simulation.random_events import event_selector
 import random
 
 
@@ -60,9 +60,10 @@ class Garage_Sale_Model:
 
         event_selector(self)
 
-    def add_customer (self, behavior):
+    def add_customer (self, behavior = None):
         index = self.no_customers
-        agg_customer = Customer(index, self, behavior)
+        agg_customer = Customer(index, self, behavior) if behavior else \
+            Customer(index,self,self.behavior[random.randint(0,len(self.behavior) - 1)])
         self.customers.append(agg_customer)
         self.no_customers += 1
 
@@ -107,7 +108,9 @@ class Garage_Sale_Model:
         self.collect_info['Average Cashier Queue Size'].append(avg_queue_size(self, self.cashiers))
         self.collect_info['Average Customer Wait'].append(get_avg_waiting_time(self))
         self.collect_info[ 'Total Gain'].append(get_total_gain(self))
-      
+    
+    def get_total_gain(self):
+        return self.collect_info['Total Gain'][-1] if self.collect_info['Total Gain'] else -self.cost_workers*(self.no_cashiers*self.no_servers)
      
     def sim(self):
         while self.actual_sec != self.time:

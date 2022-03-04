@@ -1,3 +1,7 @@
+from simulation.simulation import *
+from simulation.customer import *
+from compilation.language.built_ins import *
+from simulation.Genetic_algorithm import MakeSim
 def fibonacci(f):
     p = 1
     s = 1

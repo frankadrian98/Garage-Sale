@@ -1,6 +1,6 @@
-from agent import Agent
+from simulation.agent import Agent
 from scipy.stats import poisson , beta
-from behaviors import *
+from simulation.behaviors import *
 import numpy as np
 
 time = 10800

@@ -2,7 +2,7 @@ from compilation._lexer.token_ import TokenRegex
 
 
 token_matcher = [
-        TokenRegex('type', '(([A-Z][a-zA-Z]*)|(list|(void|(bool|(float|(int|string))))))'),
+        TokenRegex('type', '(([A-Z][a-zA-Z_]*)|(list|(void|(bool|(float|(int|string))))))'),
         TokenRegex('true','true'),
         TokenRegex('false','false'),
         TokenRegex('null','null'),       

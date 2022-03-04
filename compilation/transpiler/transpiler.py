@@ -5,6 +5,11 @@ class Transpiler:
     def __init__(self):
         self.code = []
         self.tab_style = ' '*4
+        self.code.append('from simulation.simulation import *')
+        self.code.append('from simulation.customer import *')
+        self.code.append('from compilation.language.built_ins import *')
+        self.code.append('from simulation.Genetic_algorithm import MakeSim')
+
 
     @visitor.on('node')
     def visit(self,node,tabs):

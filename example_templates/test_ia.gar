@@ -1,0 +1,2 @@
+MakeSim m := MakeSim();
+m.callgenetic(10);

@@ -1,5 +1,5 @@
 
-from worker import Worker
+from simulation.worker import Worker
 
 
 class Cashier(Worker) :

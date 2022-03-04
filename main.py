@@ -9,14 +9,26 @@ from compilation.semantics.type_checker import TypeChecker
 from compilation.semantics.context import TypeContext
 from compilation.tools.print_colors import Color
 import os
+import sys
+from pathlib import Path
 
 default_path = os.getcwd()+ '/example_templates/'
-default_file = 'fake_simulation.gar'
+default_file = 'program.gar'
 
+def change_path(pth):
+    p = pth.strip('\\')
+    new_p= ""
+    for i in range(len(p)-1):
+        new_p+= p[i] + '/'
+    default_path = new_p
+    default_file = p[-1]
 
-def main():
-
-    with open(default_path +default_file  ,'r') as f:
+def main(pth = None):
+    _f = default_path +default_file 
+    if pth:
+        _f = Path(pth)
+        change_path(pth)
+    with open(_f  ,'r') as f:
         code = f.read()
     tokens = tokenize(code, tuple(token_matcher))
     parsed =  parse(grammar, {}, tokens, grammar['PROGRAM'][0])
@@ -44,7 +56,17 @@ def main():
     return tchecker.errors
     
 if __name__ == "__main__":
-    errors = main()
+    if len(sys.argv)>1:       
+        pth  = sys.argv[1]
+        print(pth)
+        if Path(pth).is_file() and pth.endswith('.gar'):
+            errors = main(pth)
+        else:
+            print(Color.FAIL+'File must exist and be of type gar'+Color.ENDC)
+            exit(0)
+    else:
+        errors = main()
+    
     if not errors:
         exec(open(default_path+'/transpiled_'+default_file[:-4]+'.py').read())
     

@@ -1,4 +1,4 @@
-from agent import Agent
+from simulation.agent import Agent
 
 #Clase padre de los trabajadores de la tienda
 class Worker(Agent) :
