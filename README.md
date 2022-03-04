@@ -13,31 +13,5 @@ El precio de cada artículo varía según su calidad. Se sabe que en el local de
 
 Se desea simular el proceso de las ventas, variando las formas de organizar los productos y también a los empleados para minimizar el tiempo de espera del cliente en las colas y también para maximizar la ganancia total de la tienda.
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 2554b46c226f2da51476b2570e783f17e7bb9738
-Para la simulación:
 
-Elementos del Sistema :
-* Caja (Recepción de Pagos)
-* Servidor (Atención al Cliente)
-* Cliente (Interactúa con los demás agentes y tiene un nivel de tolerancia según la cantidad de personas que se encuentren en la cola)
-
--Simularemos por un tiempo de 3 horas = 10 800 segundos
-
--El usuario define la cantidad de clientes que llegarán en ese espacio de tiempo  (máximo 500 clientes)
-
--Los clientes llegarán cada 2 minutos (120 segundos) en promedio según una distribución de Poisson
-
-- Se simula dado un sistema de colas dada la Teoría M/M/s, la cual tiene s cantidad de servidores 
-
--El tiempo promedio para que el servidor procese a un cliente es de aproximadamente 160 segundos. 
-  Utilizamos una distribución de Poisson para que este número sea discreto y no negativo.
-
-- Cada cliente tiene una tolerancia de 5 personas en la cola a la cual se debe unir, es decir, si en una cola hay 5 o más personas el cliente decidirá unirse a otra y si todas tienen esta cantidad de personas , entonces no se unirá a ninguna, decidira irse y se pierde al cliente.
-<<<<<<< HEAD
-Esto pasa tanto en la cola para el servidor como en la cola para el cajero.
-=======
-Esto pasa tanto en la cola para el servidor como en la cola para el cajero.
->>>>>>> 2554b46c226f2da51476b2570e783f17e7bb9738
